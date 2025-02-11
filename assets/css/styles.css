@@ -1,0 +1,106 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  position: relative;
+  margin: 55px;
+}
+
+.blocks-container {
+  display: grid;
+  padding: 1px;
+  border: 1px solid gray;
+}
+
+.block {
+  width: 50px;
+  height: 50px;
+  background-color: #48aae6;
+  flex-grow: 1;
+  border: 1px solid white;
+}
+
+button {
+  border: none;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 22px;
+  transform: translateZ(0);
+  border: 1px solid white;
+  transition: all 250ms ease-out;
+
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+/* nema hover na reduce i cursor pointer */
+
+.add-row:hover,
+.add-column:hover {
+  background-color: #f4bf4c;
+}
+
+.add-row,
+.add-column {
+  background-color: #f3a500;
+}
+
+.add-column {
+  margin-top: 2px;
+}
+.add-row {
+  margin-left: 2px;
+}
+
+.reduce-row:hover,
+.reduce-column:hover {
+  background-color: #b55353;
+}
+
+.reduce-row,
+.reduce-column {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  background-color: #b22222;
+}
+
+.reduce-column {
+  top: -50px;
+}
+.reduce-row {
+  left: -50px;
+}
+
+.reduce-visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.reduce-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
