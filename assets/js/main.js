@@ -48,12 +48,14 @@ function Square(rows, columns) {
     });
   };
 
-  addRowButton.addEventListener("click", () => {
+  addRowButton.addEventListener("click", (event) => {
     this.rowsNumber += 1;
+    calculateAndSetReduceButtonsPosition(event);
     renderBlocks();
   });
-  addColumnButton.addEventListener("click", () => {
+  addColumnButton.addEventListener("click", (event) => {
     this.columnsNumber += 1;
+    calculateAndSetReduceButtonsPosition(event);
     renderBlocks();
   });
 
@@ -63,17 +65,30 @@ function Square(rows, columns) {
     const blocksContainerNewWidth =
       this.columnsNumber * 50 + BORDER_SIZE + BLOCKS_CONTAINER_PADDING;
 
+    const oneBlockContianerSize =
+      BLOCK_SIZE + BORDER_SIZE + BLOCKS_CONTAINER_PADDING;
+
+    if (blocksContainerNewWidth <= oneBlockContianerSize) {
+      toggleElementsVisibility([reduceColumnButton], false);
+    }
+
+    if (blocksContainerNewHeight <= oneBlockContianerSize) {
+      toggleElementsVisibility([reduceRowButton], false);
+    }
+
     const currentReduceColumnButtonPostition = parseInt(
       reduceColumnButton.style.left
     );
     const currentReduceRowButtonPostition = parseInt(reduceRowButton.style.top);
 
-    if (blocksContainerNewWidth <= currentReduceColumnButtonPostition) {
+    if (blocksContainerNewWidth === currentReduceColumnButtonPostition) {
       reduceColumnButton.style.left = `${blocksContainerNewWidth - 50}px`;
+      toggleElementsVisibility([reduceColumnButton], false);
     }
 
-    if (blocksContainerNewHeight <= currentReduceRowButtonPostition) {
+    if (blocksContainerNewHeight === currentReduceRowButtonPostition) {
       reduceRowButton.style.top = `${blocksContainerNewHeight - 50}px`;
+      toggleElementsVisibility([reduceRowButton], false);
     }
   };
 
@@ -100,7 +115,12 @@ function Square(rows, columns) {
     renderBlocks();
   });
 
-  const calculateAndSetReduceButtonsPosition = (x, y) => {
+  const calculateAndSetReduceButtonsPosition = (event) => {
+    // GET X AND Y
+    const blocksContainerPosition = blocksContainer.getBoundingClientRect();
+    const x = event.clientX - blocksContainerPosition.x;
+    const y = event.clientY - blocksContainerPosition.y;
+
     // CALCULATE COLUMN POSITION
     const hoveredColumnNumber = Math.floor(x / BLOCK_SIZE) + MIN_INDEX_POSITION;
 
@@ -144,10 +164,7 @@ function Square(rows, columns) {
   };
 
   blocksContainer.addEventListener("mousemove", (event) => {
-    const blocksContainerPosition = blocksContainer.getBoundingClientRect();
-    const x = event.clientX - blocksContainerPosition.x;
-    const y = event.clientY - blocksContainerPosition.y;
-    calculateAndSetReduceButtonsPosition(x, y);
+    calculateAndSetReduceButtonsPosition(event);
   });
 
   blocksContainer.addEventListener("mouseover", () => {
