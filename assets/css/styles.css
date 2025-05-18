@@ -54,8 +54,6 @@ button:hover {
   cursor: pointer;
 }
 
-/* nema hover na reduce i cursor pointer */
-
 .add-row:hover,
 .add-column:hover {
   background-color: #f4bf4c;
