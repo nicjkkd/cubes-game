@@ -163,8 +163,39 @@ function Square(rows, columns) {
     reduceRowButton.style.top = `${finalReduceRowPosition}px`;
   };
 
+  const throttle = (cb, delay = 5000) => {
+    let shouldWait = false;
+    let waitingArgs;
+    const timeoutFunc = () => {
+      if (waitingArgs === null) {
+        shouldWait = false;
+      } else {
+        cb(...waitingArgs);
+        waitingArgs = null;
+        setTimeout(timeoutFunc, delay);
+      }
+    };
+
+    return (...args) => {
+      if (shouldWait) {
+        waitingArgs = args;
+        return;
+      }
+
+      cb(...args);
+      shouldWait = true;
+
+      setTimeout(timeoutFunc, delay);
+    };
+  };
+
+  const throttledCalculateAndSetPosition = throttle(
+    calculateAndSetReduceButtonsPosition,
+    100
+  );
+
   blocksContainer.addEventListener("mousemove", (event) => {
-    calculateAndSetReduceButtonsPosition(event);
+    throttledCalculateAndSetPosition(event);
   });
 
   blocksContainer.addEventListener("mouseover", () => {
